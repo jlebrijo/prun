@@ -319,3 +319,50 @@ cd ops && knife solo cook root@surprize.me -p 2222
 cd www && cap production deploy db:setup
 cd app && cap production deploy
 ```
+
+# Create a Staging environment
+
+Create DNS records: www.staging.surprize.me, app.staging.surprize.me (or /etc/hosts simulation records)
+
+Create Chef node `ops/nodes/staging.surprize.me.json`:
+
+```json
+{
+  "run_list": [
+    "recipe[rails-stack]"
+  ],
+  "domain": "staging.surprize.me"
+}
+```
+
+site-cookbooks/rails-stack/files/default/database.yml:
+
+```
+staging:
+  <<: *common
+```
+
+Create 'config/deploy/staging.rb' in each app:
+
+```ruby
+server "staging.surprize.me", user: 'root', roles: %w{web app}, port: 2222
+```
+
+Maybe in `config/application.yml` on each app, references to staging.surprize.me, and a new staging env
+
+For local simulation of staging:
+
+```bash
+docker run -d -m 8g --cpuset 0-7 --name surprizeme -p 2222:22 -p 5000:3000 -p 5001:3001 -p 80:80 -i jlebrijo/prun
+
+ssh-keygen -f "/home/jlebrijo/.ssh/known_hosts" -R [staging.surrize.me]:2222
+sshpass -p 'J3mw?$_6' ssh-copy-id -o "StrictHostKeyChecking no" -i ~/.ssh/id_rsa.pub root@staging.surprize.me -p 2222
+```
+
+Cook and Deploy:
+
+```
+cd ../ops && knife solo cook root@staging.surprize.me -p 2222
+cd ../www && cap staging deploy db:setup
+cd ../app && cap staging deploy
+```
