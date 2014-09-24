@@ -26,19 +26,8 @@ docker login
 docker push jlebrijo/prun
 ```
 
-## Run a Container
+## Run a LOCAL Container
 
-Run a container:
-
-```
-docker run -d -m 8g --cpuset 0-7 --name rails_stack -p 2222:22 -i jlebrijo/prun
-```
-
-Inject your key to container:
-
-```
-sshpass -p 'J3mw?$_6' ssh-copy-id -o "StrictHostKeyChecking no" -i ~/.ssh/id_rsa.pub root@localhost -p 2222
-```
 ---
 
 Put in /etc/hosts:
@@ -52,6 +41,18 @@ Put in /etc/hosts:
 So that we can use `surprize.me` instead of `localhost`
 
 ---
+
+Run a container:
+
+```
+docker run -d -m 8g --cpuset 0-7 --name rails_stack -p 2222:22 -i jlebrijo/prun
+```
+
+Inject your key to container:
+
+```bash
+sshpass -p 'J3mw?$_6' ssh-copy-id -o "StrictHostKeyChecking no" -i ~/.ssh/id_rsa.pub root@surprize.me -p 2222
+```
 
 # Useful commands on Image/Configuration/Deploy tests
 
@@ -191,22 +192,23 @@ Finally we should add the recipe dependencies at 'site-cookbooks/rails-stack/met
 depends 'ssh_known_hosts'
 ```
 
-## Run Chef recipe over LOCAL container
+## Run Chef recipe over Container
 
-We need to create the node copying at 'nodes/localhost.json'
+We need to create the node copying at 'nodes/surprize.me.json'
 
-```
+```json
 {
   "run_list": [
     "recipe[rails-stack]"
-  ]
+  ],
+  "domain": "surprize.me"
 }
 ```
 
 Then cook the recipe:
 
 ```
-knife solo cook root@localhost -p 2222
+knife solo cook root@surprize.me -p 2222
 ```
 
 # Capistrano 3 in the apps
@@ -261,21 +263,19 @@ namespace :db do
 end
 ```
 
-config/deploy/local.rb:
+config/deploy/production.rb:
 
 ```
-server "localhost", user: 'root', roles: %w{web app}, port: 2222
+server "production", user: 'root', roles: %w{web app}, port: 2222
 set :repo_url,  "git@bitbucket.org:surprizeme/www.git"
 ```
 
-Local should be a exact copy of production env  so: `cd config/environments/ && cp production.rb local.rb`
-
-Remember change this line in both files: `config.assets.compile = true`
+Remember change this line in production.rb file: `config.assets.compile = true`
 
 First deploy:
 
 ```
-cap local deploy db:setup
+cap production deploy db:setup
 ```
 
 # DigitalOcean installation
