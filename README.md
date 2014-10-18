@@ -1,3 +1,5 @@
+![PRUN logo](http://blog.lebrijo.com/wp-content/uploads/2014/10/logo-plumbadge-150x150.png)
+
 # PRUN server = PostgreSQL + Ruby + Ubuntu + Nginx
 
 Supported by OpenSSH + Chef-solo + Supervisor
@@ -6,6 +8,8 @@ Based on:
 
 * Ubuntu 14.04 LTS and PostgreSQL 9.3
 * Ruby 2.1.2
+
+Name 'Prun' means 'Plum' in Romanian language.
 
 ## Run the container
 
