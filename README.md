@@ -43,3 +43,16 @@ For a detailed day-to-day operations on a PRUN server let's read ["DevOps workfl
 * Manage configuration with Chef `knife solo cook root@lebrijo.com -p 2222`.
 * Make Continuous Deployments with Capistrano `cap production deploy`.
 * Run server in localhost and in a [DigitalOcean](https://www.digitalocean.com/?refcode=704e0b409e24) CoreOS server.
+
+## Contributing
+
+1. Fork it ( https://github.com/[my-github-username]/prun-ops/fork )
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request
+
+## License
+
+[MIT License](http://opensource.org/licenses/MIT). Made by [Lebrijo.com](http://lebrijo.com)
+

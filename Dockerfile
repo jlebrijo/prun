@@ -27,10 +27,6 @@ RUN echo PATH=$PATH:/usr/local/ruby/2.1.2/bin > /etc/environment
 RUN echo gem: --no-ri --no-rdoc > /root/.gemrc
 ENV PATH $PATH:/usr/local/ruby/2.1.2/bin
 RUN gem install bundler
-RUN gem install rack -v 1.5.2
-RUN gem install thin -v 1.6.2
-RUN thin install
-RUN /usr/sbin/update-rc.d -f thin defaults
 
 # POSTGRESQL prepared for localhost connections
 RUN export LANGUAGE=en_US.UTF-8
