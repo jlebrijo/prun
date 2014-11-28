@@ -11,6 +11,8 @@ Based on:
 
 Name 'Prun' means 'Plum' in Romanian language.
 
+Based on [Base server](https://registry.hub.docker.com/u/jlebrijo/base/)
+
 ## Run the container
 
 Download image and run a container
