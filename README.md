@@ -22,22 +22,32 @@ docker pull jlebrijo/prun
 docker run -d -p 2222:22 -i jlebrijo/prun
 ```
 
-Inject your SSH public key:
+## Inject your SSH public key:
+
+In order to have SSH access you have to copy your public keys into the container. I recommend the following script:
 
 ```
-sshpass -p 'J3mw?$_6' ssh-copy-id -o "StrictHostKeyChecking no" -i ~/.ssh/id_rsa.pub root@surprize.me -p 2222
+      # Container folder
+      if sudo test -d "/var/lib/docker/aufs"; then
+        CONTAINERS_DIR=/var/lib/docker/aufs/mnt
+      elif sudo test -d "/var/lib/docker/aufs"; then
+        CONTAINERS_DIR=/var/lib/docker/btrfs/subvolumes
+      fi
+
+      ID=$(docker inspect -f   '{{.Id}}' #{container_name})
+      SSH_DIR=$CONTAINERS_DIR/$ID/root/.ssh
+      echo SSH container folder is $SSH_DIR
+      if sudo test ! -d "$SSH_DIR" ; then
+        sudo mkdir $SSH_DIR
+      fi
+
+      echo Copying authorized_keys and id_rsa.pub files
+      sudo touch $SSH_DIR/authorized_keys
+      sudo cat ~/.ssh/authorized_keys | sudo tee -a $SSH_DIR/authorized_keys
+      sudo cat ~/.ssh/id_rsa.pub | sudo tee -a $SSH_DIR/authorized_keys
+      sudo chmod 600 $SSH_DIR/authorized_keys
 ```
 
-SSH access over the port 2222: `ssh root@localhost -p 2222`
-
-## Security Warn
-
-The root password is 'J3mw?$_6' by default. You need to change it ASAP if you use this container public on the Internet:
-
-```
- echo 'root:xxxxxxxxxxxxxxx' | chpasswd
-```
- 
 ## DevOps workflow for Rails Developers
 
 For a detailed day-to-day operations on a PRUN server let's read ["DevOps workflow with Docker/Chef/Capistrano for Rails Applications"](http://blog.lebrijo.com/?p=587). Here you will see how to:
