@@ -7,7 +7,7 @@ MAINTAINER Juan Lebrijo "juan@lebrijo.com"
 RUN apt-get -y update
 
 # RUBY
-ENV RUBY_VERSION 2.1.2
+ENV RUBY_VERSION 2.2.0
 
 RUN apt-get install -y git build-essential libsqlite3-dev libssl-dev gawk libreadline6-dev libyaml-dev sqlite3 autoconf libgdbm-dev libncurses5-dev automake libtool bison pkg-config libffi-dev
 RUN git clone https://github.com/sstephenson/ruby-build.git /root/ruby-build
