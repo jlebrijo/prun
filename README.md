@@ -7,7 +7,7 @@ Supported by OpenSSH + Chef-solo + Supervisor
 Based on:
 
 * Ubuntu 14.04 LTS and PostgreSQL 9.3
-* Ruby 2.1.2
+* Ruby: for version use [repo tags](https://registry.hub.docker.com/u/jlebrijo/prun/tags/manage/)
 
 Name 'Prun' means 'Plum' in Romanian language.
 
